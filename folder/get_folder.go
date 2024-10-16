@@ -26,6 +26,11 @@ func (f *driver) GetFoldersByOrgID(orgID uuid.UUID) []Folder {
 
 }
 
+var ErrFolderNotFound = errors.New("folder not found")
+var ErrOrganizationNotFound = errors.New("organization not found")
+var ErrFolderNameEmpty = errors.New("folder name cannot be empty")
+var ErrFolderNameContainsDot = errors.New("folder name cannot contain '.'")
+
 // Function to retrieve all child folders of a folder with a given name.
 // The function should return an error if the folder with the given name does not exist within the organization.
 // Function signature has been modified to return an error.
@@ -35,15 +40,15 @@ func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) ([]Folder, err
 	orgFolders := f.GetFoldersByOrgID(orgID)
 	// println("orgFolders: ", orgFolders)
 	if len(orgFolders) == 0 {
-		return nil, errors.New("Organization does not exist: " + orgID.String())
+		return nil, ErrOrganizationNotFound
 	}
 
 	if name == "" {
-		return nil, errors.New("Folder name cannot be empty")
+		return nil, ErrFolderNameEmpty
 	}
 
 	if strings.Count(name, ".") > 0 {
-		return nil, errors.New("Folder name cannot contain '.'")
+		return nil, ErrFolderNameContainsDot
 	}
 
 	// new var for parent folder
@@ -60,7 +65,7 @@ func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) ([]Folder, err
 
 	// if no parent folder, return error and nil -> not empty slice
 	if parentFolder.Name == "" {
-		return nil, errors.New("Folder does not exist within the organization: " + orgID.String())
+		return nil, ErrFolderNotFound
 	}
 	// parent folder path is prefix for child folders
 	parentPath := parentFolder.Paths + "."
