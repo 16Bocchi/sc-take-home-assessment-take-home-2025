@@ -27,6 +27,7 @@ func (f *driver) MoveFolder(name string, dst string) ([]Folder, error) {
 	var dstF *Folder
 	var srcIndex int
 
+	// Define error variables
 	var ErrSrcNotFound = errors.New("folder not found")
 	var ErrDstNotFound = errors.New("destination folder not found")
 	var ErrOrgIDMismatch = errors.New("organisation ID mismatch")

@@ -8,6 +8,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// Custom function to copy folders.
+
+// This function was created because the tests were modifying the folders in the driver.
 func copyFolders(folders []folder.Folder) []folder.Folder {
 	copyFolders := make([]folder.Folder, len(folders))
 	copy(copyFolders, folders)
@@ -18,7 +21,7 @@ func Test_folder_MoveFolder(t *testing.T) {
 	t.Parallel()
 	useFolders := folder.GetSampleData()
 	useOrgID := uuid.FromStringOrNil("b20c2cfb-04c4-474d-ba67-03a8a7453578")
-	// useDriver := folder.NewDriver(useFolders)
+	// useDriver := folder.NewDriver(useFolders) // called again later in test, each test has its own driver
 	altOrgID := uuid.FromStringOrNil("452b5b49-5762-4d10-877a-e84b6a8beb76")
 	useInitialFolders := copyFolders(useFolders)
 

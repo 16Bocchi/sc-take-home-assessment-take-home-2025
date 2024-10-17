@@ -35,10 +35,13 @@ func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) ([]Folder, err
 	orgFolders := f.GetFoldersByOrgID(orgID)
 	// println("orgFolders: ", orgFolders)
 
+	// Define error variables
 	var ErrFolderNotFound = errors.New("folder not found")
 	var ErrOrganisationNotFound = errors.New("organisation not found")
 	var ErrFolderNameEmpty = errors.New("folder name cannot be empty")
 	var ErrFolderNameContainsDot = errors.New("folder name cannot contain '.'")
+
+	// if no folders in orgFolders, return error
 	if len(orgFolders) == 0 {
 		return nil, ErrOrganisationNotFound
 	}
