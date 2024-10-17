@@ -31,18 +31,16 @@ func (f *driver) GetFoldersByOrgID(orgID uuid.UUID) []Folder {
 // Function signature has been modified to return an error.
 func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) ([]Folder, error) {
 
-	// Define errors here! For use later in code
-	var ErrFolderNotFound = errors.New("folder not found")
-	var ErrOrganizationNotFound = errors.New("organization not found")
-	var ErrFolderNameEmpty = errors.New("folder name cannot be empty")
-	var ErrFolderNameContainsDot = errors.New("folder name cannot contain '.'")
-
-	// Define variables to store parent and child folders
 	childFolders := []Folder{}
 	orgFolders := f.GetFoldersByOrgID(orgID)
 	// println("orgFolders: ", orgFolders)
+
+	var ErrFolderNotFound = errors.New("folder not found")
+	var ErrOrganisationNotFound = errors.New("organisation not found")
+	var ErrFolderNameEmpty = errors.New("folder name cannot be empty")
+	var ErrFolderNameContainsDot = errors.New("folder name cannot contain '.'")
 	if len(orgFolders) == 0 {
-		return nil, ErrOrganizationNotFound
+		return nil, ErrOrganisationNotFound
 	}
 
 	if name == "" {

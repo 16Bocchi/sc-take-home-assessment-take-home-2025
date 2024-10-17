@@ -2,20 +2,20 @@ package main
 
 import (
 	"github.com/georgechieng-sc/interns-2022/folder"
-	"github.com/gofrs/uuid"
 	"github.com/sirupsen/logrus"
 )
 
 func main() {
-	orgID := uuid.FromStringOrNil(folder.DefaultOrgID)
+	// orgID := uuid.FromStringOrNil("b20c2cfb-04c4-474d-ba67-03a8a7453578")
 
 	res := folder.GetAllFolders()
 
 	// example usage
 	folderDriver := folder.NewDriver(res)
 	// orgFolder := folderDriver.GetFoldersByOrgID(orgID)
-	name := "settling-hobgoblin"
-	childFolders, err := folderDriver.GetAllChildFolders(orgID, name)
+	src := "beta"
+	dst := "zeta"
+	res, err := folderDriver.MoveFolder(src, dst)
 	if err != nil {
 		logrus.Error(err)
 	}
@@ -23,9 +23,9 @@ func main() {
 	// folder.PrettyPrint(res)
 	// fmt.Printf("\n Folders for orgID: %s", orgID)
 	// folder.PrettyPrint(orgFolder)
-	if childFolders != nil {
-		logrus.Info("\n Child folders for orgID and name: ", orgID, name)
-		folder.PrettyPrint(childFolders)
+	if res != nil {
+		logrus.Info("\n Folders after moving folder: ")
+		folder.PrettyPrint(res)
 	}
 
 	// folder.PrettyPrint(err)

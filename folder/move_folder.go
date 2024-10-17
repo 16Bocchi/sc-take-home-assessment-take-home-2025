@@ -21,17 +21,17 @@ The function should return an error if:
 - The destination folder is a child of the source folder.
 */
 func (f *driver) MoveFolder(name string, dst string) ([]Folder, error) {
-	// Define errors here! For use later in code
-	var ErrSrcNotFound = errors.New("folder not found")
-	var ErrDstNotFound = errors.New("destination folder not found")
-	var ErrOrgIDMismatch = errors.New("organization ID mismatch")
-	var ErrSrcMatchDst = errors.New("source folder and destination folder can not be the same")
-	var ErrDstIsChild = errors.New("destination folder is a child of the source folder")
 
 	// Define variables to store source and destination folders
 	var srcF *Folder
 	var dstF *Folder
 	var srcIndex int
+
+	var ErrSrcNotFound = errors.New("folder not found")
+	var ErrDstNotFound = errors.New("destination folder not found")
+	var ErrOrgIDMismatch = errors.New("organisation ID mismatch")
+	var ErrSrcMatchDst = errors.New("source folder and destination folder can not be the same")
+	var ErrDstIsChild = errors.New("destination folder is a child of the source folder")
 
 	// Look for source folder
 	for index, folder := range f.folders {
@@ -81,7 +81,7 @@ func (f *driver) MoveFolder(name string, dst string) ([]Folder, error) {
 
 	// update child folders path
 	for i, folder := range f.folders {
-		if strings.HasPrefix(folder.Paths, oldPathStr) {
+		if strings.HasPrefix(folder.Paths, oldPathStr) && folder.OrgId == srcF.OrgId {
 			folder.Paths = strings.Replace(folder.Paths, oldPathStr, newPathStr, 1) // One is here to replace first occurence
 			f.folders[i] = folder
 		}
