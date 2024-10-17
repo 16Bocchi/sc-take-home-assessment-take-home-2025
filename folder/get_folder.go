@@ -26,16 +26,18 @@ func (f *driver) GetFoldersByOrgID(orgID uuid.UUID) []Folder {
 
 }
 
-var ErrFolderNotFound = errors.New("folder not found")
-var ErrOrganizationNotFound = errors.New("organization not found")
-var ErrFolderNameEmpty = errors.New("folder name cannot be empty")
-var ErrFolderNameContainsDot = errors.New("folder name cannot contain '.'")
-
 // Function to retrieve all child folders of a folder with a given name.
 // The function should return an error if the folder with the given name does not exist within the organization.
 // Function signature has been modified to return an error.
 func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) ([]Folder, error) {
 
+	// Define errors here! For use later in code
+	var ErrFolderNotFound = errors.New("folder not found")
+	var ErrOrganizationNotFound = errors.New("organization not found")
+	var ErrFolderNameEmpty = errors.New("folder name cannot be empty")
+	var ErrFolderNameContainsDot = errors.New("folder name cannot contain '.'")
+
+	// Define variables to store parent and child folders
 	childFolders := []Folder{}
 	orgFolders := f.GetFoldersByOrgID(orgID)
 	// println("orgFolders: ", orgFolders)
@@ -70,6 +72,7 @@ func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) ([]Folder, err
 	// parent folder path is prefix for child folders
 	parentPath := parentFolder.Paths + "."
 
+	// loop through orgFolders, if folder path starts with parentPath, append to childFolders
 	for _, folder := range orgFolders {
 		if strings.HasPrefix(folder.Paths, parentPath) && folder.Paths != parentPath {
 			childFolders = append(childFolders, folder)
